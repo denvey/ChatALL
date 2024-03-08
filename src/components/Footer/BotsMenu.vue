@@ -17,8 +17,37 @@
         >
         </v-btn>
       </template>
-
+      <!-- <v-navigation-drawer
+        v-model="drawer"
+        location="right"
+        temporary
+      >
+      </v-navigation-drawer> -->
       <v-card>
+        <v-card-title>
+          <v-list>
+            <v-list-item>
+              <v-list-item-title class="font-weight-black">
+                {{ $t("footer.chooseFavorite") }}
+              </v-list-item-title>
+              <template v-slot:append>
+                <v-btn-toggle
+                  v-model="selectedTags"
+                  divided
+                  color="primary"
+                  group
+                  variant="outlined"
+                  rounded="xl"
+                  @update:model-value="filterBots($event)"
+                >
+                  <v-btn v-for="(tag, index) in tags" :key="index" :value="tag">
+                    {{ $t(`footer.${tag}`) }}
+                  </v-btn>
+                </v-btn-toggle>
+              </template>
+            </v-list-item>
+          </v-list>
+        </v-card-title>
         <v-list
           class="bots-list"
           density="compact"
@@ -45,31 +74,6 @@
               <BotLogo :bot="bot" active="true" size="24"></BotLogo>&nbsp;
               <span>{{ bot.getFullname() }}</span>
             </v-list-item-title>
-          </v-list-item>
-        </v-list>
-
-        <v-divider></v-divider>
-
-        <v-list>
-          <v-list-item>
-            <v-list-item-title class="font-weight-black">
-              {{ $t("footer.chooseFavorite") }}
-            </v-list-item-title>
-            <template v-slot:append>
-              <v-btn-toggle
-                v-model="selectedTags"
-                divided
-                color="primary"
-                group
-                variant="outlined"
-                rounded="xl"
-                @update:model-value="filterBots($event)"
-              >
-                <v-btn v-for="(tag, index) in tags" :key="index" :value="tag">
-                  {{ $t(`footer.${tag}`) }}
-                </v-btn>
-              </v-btn-toggle>
-            </template>
           </v-list-item>
         </v-list>
       </v-card>

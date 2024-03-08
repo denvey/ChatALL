@@ -197,7 +197,6 @@ const props = defineProps({
   },
   columns: {
     type: Number,
-    required: true,
   },
   messagePromptIndex: {
     type: String,
@@ -547,8 +546,8 @@ function pageRight() {
 
 .prompt {
   background-color: rgb(var(--v-theme-prompt));
-  width: fit-content;
-  grid-column: 1 / span var(--columns);
+  /* width: fit-content; */
+  /* grid-column: 1 / span var(--columns); */
 }
 
 .prompt pre {
@@ -616,5 +615,9 @@ function pageRight() {
 
 .cursor-auto {
   cursor: auto;
+}
+.v-md-editor-preview {
+  max-height: 600px;
+  overflow-y: auto;
 }
 </style>

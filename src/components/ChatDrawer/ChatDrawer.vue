@@ -3,12 +3,13 @@
     <v-list nav>
       <v-list-item
         :id="SHORTCUT_NEW_CHAT.elementId"
-        density="comfortable"
         class="mb-1 border"
         :title="$t('chat.newChat')"
         @click="onAddChat"
         @shortkey="onAddChat"
         v-shortkey="SHORTCUT_NEW_CHAT.key"
+        :border="0.5"
+        :min-height="38"
       >
         <template v-slot:prepend>
           <v-icon color="primary"> mdi-plus </v-icon>
