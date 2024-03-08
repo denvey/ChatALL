@@ -7,7 +7,7 @@
         @focus-textarea="focusPromptTextarea"
       ></ChatDrawer>
       <v-main class="content">
-        <v-app-bar class="header-content pa-0">
+        <v-app-bar density="compact" class="header-content pa-0">
           <!-- Start Header  -->
           <div class="header-content" v-show="isSelectedResponsesEmpty">
             <v-app-bar-nav-icon
@@ -43,47 +43,39 @@
               }"
             />
           </div>
-          <div
-            class="header-content"
-            style="padding-right: 16px"
-            v-show="isSelectedResponsesEmpty"
-          >
+          <div class="header-content" v-show="isSelectedResponsesEmpty">
             <v-icon
               :id="SHORTCUT_FIND.elementId"
-              class="cursor-pointer"
+              class="cursor-pointer mr-1"
               color="primary"
               icon="mdi-magnify"
-              size="x-large"
               @click="openFind()"
             ></v-icon>
             <v-icon
               v-shortkey="SHORTCUT_CLEAR_MESSAGES.key"
               @shortkey="clearMessages"
               :id="SHORTCUT_CLEAR_MESSAGES.elementId"
-              class="cursor-pointer"
+              class="cursor-pointer mr-1"
               color="primary"
               icon="mdi-broom"
-              size="x-large"
               @click="clearMessages()"
             ></v-icon>
             <v-icon
               v-shortkey="SHORTCUT_SETTINGS.key"
               @shortkey="openSettingsModal"
               :id="SHORTCUT_SETTINGS.elementId"
-              class="cursor-pointer"
+              class="cursor-pointer mr-1"
               color="primary"
               icon="mdi-cog"
-              size="x-large"
               @click="openSettingsModal()"
             ></v-icon>
             <v-icon
               v-shortkey="SHORTCUT_SHORTCUT_GUIDE.key"
               @shortkey="toggleShortcutGuide"
               :id="SHORTCUT_SHORTCUT_GUIDE.elementId"
-              class="cursor-pointer"
+              class="cursor-pointer mr-1"
               color="primary"
               icon="mdi-help"
-              size="x-large"
               @click="toggleShortcutGuide()"
             ></v-icon>
           </div>
@@ -119,7 +111,6 @@
           <!-- End Selected Responses  -->
         </v-app-bar>
         <FindModal ref="findRef"></FindModal>
-
         <ChatMessages :chat="currentChat" :columns="columns"></ChatMessages>
         <FooterBar
           ref="footerBarRef"
@@ -314,12 +305,12 @@ body {
   height: 100vh;
 }
 
-header {
+#app header {
   width: 100%;
-  background-color: rgb(var(--v-theme-header));
-  box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-  padding: 16px;
+  background-color: rgba(var(--v-theme-header), 0.8);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   z-index: 999;
+  backdrop-filter: blur(2px);
 }
 
 .header-content {
@@ -329,7 +320,7 @@ header {
 }
 
 .logo {
-  height: 40px;
+  height: 26px;
 }
 
 .column-icons img {

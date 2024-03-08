@@ -12,7 +12,7 @@
         width: 100%;
         display: flex;
         flex-direction: row;
-        align-items: flex-end;
+        align-items: center;
       "
     >
       <v-textarea
@@ -68,7 +68,7 @@
         />
       </div>
       <BotsMenu
-        style="padding-bottom: 0.5rem; padding-left: 4px"
+        style="padding-left: 4px"
         :id="SHORTCUT_BOTS_MENU.elementId"
         ref="botsMenuRef"
         :favBots="favBots"
@@ -420,7 +420,6 @@ defineExpose({
   flex-wrap: wrap;
   gap: 4px;
   align-items: center;
-  padding-bottom: 0.5rem;
 }
 
 /* Override default style of vuetify v-textarea */

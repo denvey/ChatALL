@@ -5,23 +5,39 @@
     }}</v-label>
   </v-container>
   <div class="messages">
+    <!-- class="message-grid"
+      :style="{ gridTemplateColumns: gridTemplateColumns }" -->
     <div
-      class="message-grid"
-      :style="{ gridTemplateColumns: gridTemplateColumns }"
+      v-for="message in currentChatMessages"
+      :key="message.index"
+      class="w-100 pa-3"
     >
-      <template v-for="(message, index) in currentChatMessages" :key="index">
-        <chat-prompt
-          v-if="message.type === 'prompt'"
-          :columns="columns"
-          :message="message"
-        ></chat-prompt>
-        <chat-response
-          v-else
-          :chat="chat"
-          :columns="columns"
-          :messages="message"
-        ></chat-response>
-      </template>
+      <chat-prompt :columns="columns" :message="message"></chat-prompt>
+      <v-tabs
+        center-active
+        :style="{ 'grid-column': `1 / span ${columns}` }"
+        v-model="currentItem"
+      >
+        <template v-for="(item, i) in message.responses" :key="i">
+          <v-tab v-if="item.type !== 'prompt'">
+            {{ item.className }}
+          </v-tab>
+        </template>
+      </v-tabs>
+      <div class="message-slide-group d-flex flex-nowrap overflow-x-auto">
+        <div
+          class="message-slide-item pa-1 flex-shrink-0"
+          v-for="message in message.responses"
+          :key="message.index"
+          :style="{ width: `${100 / columns}%` }"
+        >
+          <chat-response
+            v-if="message.type !== 'prompt'"
+            :chat="chat"
+            :messages="[message]"
+          ></chat-response>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -36,7 +52,6 @@ import ChatResponse from "./ChatResponse.vue";
 import { autoScrollToBottom, scrollToBottom } from "@/helpers/scroll-helper";
 
 const store = useStore();
-
 const props = defineProps({
   columns: {
     type: Number,
@@ -47,8 +62,10 @@ const props = defineProps({
   },
 });
 
+console.log(props.columns);
+const currentItem = ref(0);
 const loading = ref(false);
-const gridTemplateColumns = computed(() => `repeat(${props.columns}, 1fr)`);
+// const gridTemplateColumns = computed(() => `repeat(${props.columns}, 1fr)`);
 const currentChatMessages = ref([]);
 let createChatMessageLiveQuery = (index) => {
   return liveQuery(async () => {
@@ -59,29 +76,41 @@ let createChatMessageLiveQuery = (index) => {
     const messages = await Messages.table.bulkGet(keys);
     messages.sort((a, b) => a.createdTime - b.createdTime);
     const groupedMessage = [];
-    let responses = Object.create(null);
+    // let responses = Object.create(null);
+    // for (let i = 0; i < messages.length; i++) {
+    //   const message = messages[i];
+    //   if (message.type === "prompt") {
+    //     if (Object.keys(responses).length !== 0) {
+    //       groupedMessage.push.apply(groupedMessage, Object.values(responses));
+    //     }
+    //     groupedMessage.push(message);
+    //     responses = Object.create(null);
+    //     continue;
+    //   }
+    //   if (message.hide !== true) {
+    //     if (!responses[message.className]) {
+    //       // group responses with same bot for carousel
+    //       responses[message.className] = [];
+    //     }
+    //     responses[message.className].push(message);
+    //   }
+    // }
+    // if (Object.keys(responses).length !== 0) {
+    //   groupedMessage.push.apply(groupedMessage, Object.values(responses));
+    // }
+    let tempMessage;
     for (let i = 0; i < messages.length; i++) {
       const message = messages[i];
       if (message.type === "prompt") {
-        if (Object.keys(responses).length !== 0) {
-          groupedMessage.push.apply(groupedMessage, Object.values(responses));
-        }
-        groupedMessage.push(message);
-        responses = Object.create(null);
-        continue;
+        tempMessage = message;
+        tempMessage.responses = [];
+        groupedMessage.push(tempMessage);
+      } else {
+        tempMessage.responses.push(message);
       }
-      if (message.hide !== true) {
-        if (!responses[message.className]) {
-          // group responses with same bot for carousel
-          responses[message.className] = [];
-        }
-        responses[message.className].push(message);
-      }
-    }
-    if (Object.keys(responses).length !== 0) {
-      groupedMessage.push.apply(groupedMessage, Object.values(responses));
     }
     currentChatMessages.value = groupedMessage;
+    console.log(currentChatMessages.value);
     nextTick(() => autoScrollToBottom());
   });
 };

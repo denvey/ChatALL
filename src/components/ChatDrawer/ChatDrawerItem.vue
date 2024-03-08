@@ -5,13 +5,14 @@
     :key="`chat-${props.chat.index}`"
     :active="props.currentChatIndex === props.chat.index"
     :title="props.chat.title"
+    :subtitle="dayjs(props.chat.modifiedTime).format('YYYY-MM-DD')"
     :value="props.chat.index"
-    class="pa-3 pr-0"
+    class="pa-2"
     :style="{ cursor: isCursorWait ? 'wait' : 'pointer' }"
     @click="onSelectChat"
   >
     <template v-slot:prepend>
-      <v-icon color="primary" class="mr-4"> mdi-message-outline </v-icon>
+      <v-icon size="small" class="mr-4"> mdi-message-outline </v-icon>
     </template>
     <template #append v-if="props.currentChatIndex === props.chat.index">
       <v-btn
@@ -60,6 +61,7 @@
 
 <script setup>
 import { ref } from "vue";
+import dayjs from "dayjs";
 
 const emit = defineEmits([
   "hideChat",
