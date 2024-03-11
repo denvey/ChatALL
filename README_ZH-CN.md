@@ -8,6 +8,16 @@
 
 </div>
 
+## 说明
+本项目fork自chatall，主要修改了样式和优化了一些用户体验。
+样式修改：
+- 调整了icon大小
+- navbar和底部修改为毛玻璃效果
+
+用户体验:
+- 修改了多对话的显示效果，修改为横向滚动查看多个AI的对话内容，支持tab快速切换(还微完成)
+- 修复流式回答有点卡(修复中)
+
 ## 屏幕截图
 
 ![Screenshot](screenshots/screenshot-1.png?raw=true)
