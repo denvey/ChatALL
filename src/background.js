@@ -1,6 +1,13 @@
 "use strict";
 
-import { BrowserWindow, app, ipcMain, nativeTheme, protocol } from "electron";
+import {
+  BrowserWindow,
+  app,
+  screen,
+  ipcMain,
+  nativeTheme,
+  protocol,
+} from "electron";
 import { createProtocol } from "vue-cli-plugin-electron-builder/lib";
 import installExtension, { VUEJS3_DEVTOOLS } from "electron-devtools-installer";
 import fs from "fs";
@@ -125,10 +132,12 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 async function createWindow() {
+  const { width, height } = screen.getPrimaryDisplay().workAreaSize;
   // Create the browser window.
+  console.log(width * 0.8, height);
   const win = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: width * 0.8,
+    height: height - 100,
     backgroundColor: nativeTheme.shouldUseDarkColors ? "#1a1a20" : "#fff",
     show: false,
     webPreferences: {
